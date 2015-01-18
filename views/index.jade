@@ -1,0 +1,59 @@
+extends layout
+
+block head
+  link(rel="stylesheet" type="text/css" href="index.css")
+  title GameOfLife.js
+
+block content
+  div
+    canvas#c(width=640 height=640)
+  div
+    button(name=next type=submit) Next
+
+  script.
+    var cv = document.getElementById('c');
+    var c = cv.getContext("2d");
+
+    var grid = new Array(64);
+    for (var i = 0; i < 64; i++) {
+      grid[i] = new Array(64);
+    }
+
+    var draw = function() {
+      c.fillStyle = "#FFFFFF";
+      c.fillRect(0, 0, 640, 640);
+      c.fillStyle = "#000000";
+      for (var i = 0; i < 64; i++) {
+        c.fillRect(i*10, 0, 1, 640);
+        c.fillRect(0, i*10, 640, 1);
+      }
+
+      for (var x = 0; x < 64; x++) {
+        for (var y = 0; y < 64; y++) {
+          if (grid[x][y]) {
+            c.fillRect(x*10, y*10, 10, 10);
+          }
+        }
+      }
+    }
+
+    draw();
+
+    $("canvas").click(function(e) {
+      socket.emit("toggle", {x: Math.floor(e.pageX/10), y: Math.floor(e.pageY/10)});
+    });
+
+    $("button").click(function(e) {
+      socket.emit("update");
+    });
+
+    socket.on("toggle", function(coord) {
+      grid[coord.x][coord.y] = !grid[coord.x][coord.y];
+      console.log(grid[coord.x][coord.y]);
+      draw();
+    });
+
+    socket.on("update", function(board) {
+      grid = board;
+      draw();
+    });

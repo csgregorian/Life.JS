@@ -1,0 +1,19 @@
+{
+  "name": "csgregorian.com",
+  "description": "homepage",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "cookie-parser": "^1.3.2",
+    "express": "^4.4.5",
+    "jade": "^1.3.1",
+    "morgan": "*",
+    "nib": "*",
+    "orchestrate": "*",
+    "request": "^2.45.0",
+    "socket.io": "^1.0.6",
+    "stylus": "*",
+    "tingodb": "^0.3.0"
+  }
+}
