@@ -19,6 +19,10 @@ block content
 
   //- JAVASCRIPT STARTS HERE
   script.
+    navigator.vibrate = navigator.vibrate ||
+                        navigator.webkitVibrate ||
+                        navigator.mozVibrate ||
+                        navigator.msVibrate;
 
     var cv = document.getElementById('c');
     var c = cv.getContext("2d");
@@ -59,6 +63,10 @@ block content
     $("canvas").mousedown(function(e) {
       console.log(getMousePos(cv, e));
       socket.emit("toggle", getMousePos(cv, e));
+    });
+
+    $(".button").click(function(e) {
+      navigator.vibrate(100);
     });
 
     $("#evolve").click(function(e) {
