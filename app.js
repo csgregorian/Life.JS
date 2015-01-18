@@ -91,7 +91,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('toggle', function(coord) {
     grid[coord.x][coord.y] = !grid[coord.x][coord.y];
-    io.emit('toggle', coord);
+    socket.broadcast.emit('toggle', coord);
   });
 
   function update() {

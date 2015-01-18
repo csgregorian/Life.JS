@@ -60,10 +60,51 @@ block content
         };
     }
 
+    var m = {x:0, y:0};
+    var mouse_down = false;
+    var fill = false;
+
     $("canvas").mousedown(function(e) {
-      console.log(getMousePos(cv, e));
-      socket.emit("toggle", getMousePos(cv, e));
+      m = getMousePos(cv, e);
+      mouse_down = true;
+
+      if (grid[m.x][m.y]) {
+        fill = false;
+      } else {
+        fill = true;
+      }
+
+      socket.emit("toggle", m);
+      draw();
     });
+
+    $("canvas").mouseup(function(e) {
+      mouse_down = false;
+    });
+
+
+    $("canvas").mousemove(function(e) {
+      if (!mouse_down) {
+        return;
+      }
+
+      m = getMousePos(cv, e);
+
+      if (fill) {
+        if (!grid[m.x][m.y]) {
+          grid[m.x][m.y] = true;
+          socket.emit("toggle", m);
+          draw();
+        }
+      } else if (!fill) {
+        if (grid[m.x][m.y]) {
+          grid[m.x][m.y] = false;
+          socket.emit("toggle", m);
+          draw();
+        }
+      }
+    });
+
 
     $(".button").mousedown(function(e) {
       navigator.vibrate(10);
