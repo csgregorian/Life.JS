@@ -69,8 +69,10 @@ block content
       mouse_down = true;
 
       if (grid[m.x][m.y]) {
+        grid[m.x][m.y] = false;
         fill = false;
       } else {
+        grid[m.x][m.y] = true;
         fill = true;
       }
 
@@ -110,8 +112,10 @@ block content
       mouse_down = true;
 
       if (grid[m.x][m.y]) {
+        grid[m.x][m.y] = false;
         fill = false;
       } else {
+        grid[m.x][m.y] = true;
         fill = true;
       }
 
