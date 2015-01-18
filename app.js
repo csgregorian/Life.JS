@@ -129,6 +129,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('reset', function() {
     grid = newGrid();
+    io.emit('reset');
     io.emit('update', grid);
   });
 

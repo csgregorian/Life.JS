@@ -128,6 +128,7 @@ block content
     });
 
     $(document).on("touchstart", function(e) {
+      e.preventDefault();
       pos = getTouchPos(e);
 
       mouse_down = true;
@@ -149,6 +150,7 @@ block content
     }); 
 
     $(document).on("touchmove", function(e) {
+      e.preventDefault();
       pos = getTouchPos(e);
 
       if (!mouse_down) {
@@ -182,7 +184,6 @@ block content
     $("#reset").click(function(e) {
       if (window.confirm("Are you sure you want to reset?"))
         socket.emit("reset");
-        generation = 0;
     });
 
     $("#auto").click(function(e) {
@@ -199,6 +200,10 @@ block content
       generation++;
       $("#generation").html(generation);
       draw();
+    });
+
+    socket.on("reset", function() {
+      generation = 0;
     });
 
     socket.on("auto", function(is_auto) {
