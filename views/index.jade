@@ -65,8 +65,8 @@ block content
       socket.emit("toggle", getMousePos(cv, e));
     });
 
-    $(".button").click(function(e) {
-      navigator.vibrate(100);
+    $(".button").mousedown(function(e) {
+      navigator.vibrate(10);
     });
 
     $("#evolve").click(function(e) {
