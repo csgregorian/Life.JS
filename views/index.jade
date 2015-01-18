@@ -105,6 +105,46 @@ block content
       }
     });
 
+    $("canvas").bind("touchstart", function(e) {
+      m = getMousePos(cv, e);
+      mouse_down = true;
+
+      if (grid[m.x][m.y]) {
+        fill = false;
+      } else {
+        fill = true;
+      }
+
+      socket.emit("toggle", m);
+      draw();
+    });
+
+    $("canvas").bind("touchend", function (e) {
+      mouse_down = false;
+    });
+
+    $("canvas").bind("touchmove", function(e) {
+      if (!mouse_down) {
+        return;
+      }
+
+      m = getMousePos(cv, e);
+
+      if (fill) {
+        if (!grid[m.x][m.y]) {
+          grid[m.x][m.y] = true;
+          socket.emit("toggle", m);
+          draw();
+        }
+      } else if (!fill) {
+        if (grid[m.x][m.y]) {
+          grid[m.x][m.y] = false;
+          socket.emit("toggle", m);
+          draw();
+        }
+      }
+    });
+
 
     $(".button").mousedown(function(e) {
       navigator.vibrate(10);
