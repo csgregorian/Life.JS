@@ -119,6 +119,6 @@ io.sockets.on('connection', function(socket){
 });
 
 // Server
-http.listen(3000, function(){
-  console.log('Listening on localhost:3000');
+http.listen(80, function(){
+  console.log('Listening on localhost:80');
 });
