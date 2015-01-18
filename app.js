@@ -88,6 +88,7 @@ var is_auto = false;
 // Sockets
 io.sockets.on('connection', function(socket){
   socket.emit('update', grid);
+  socket.emit('auto', is_auto);
 
   socket.on('toggle', function(coord) {
     grid[coord.x][coord.y] = !grid[coord.x][coord.y];

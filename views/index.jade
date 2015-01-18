@@ -7,13 +7,18 @@ block head
 block content
   div
     canvas#c(width=640 height=640)
+
+  div.generation Generation 
+    span#generation 1
+
   div.button-container
     a
       div.button#evolve Evolve
     a
-      div.button#reset Reset
+      div.button#reset Rebirth
     a
-      div.button#auto Auto-evolve
+      div.button#auto Automate
+
 
 
 
@@ -37,7 +42,7 @@ block content
     }
 
     var draw = function() {
-      c.fillStyle = "#FFFFFF";
+      c.fillStyle = "#DDDDDD";
       c.fillRect(0, 0, 640, 640);
       c.fillStyle = "#000000";
       for (var i = 0; i < 64; i++) {
@@ -77,6 +82,7 @@ block content
     var pos = {x:0, y:0};
     var mouse_down = false;
     var fill = false;
+    var generation = 0;
 
     $("canvas").mousedown(function(e) {
       pos = getMousePos(cv, e);
@@ -176,6 +182,7 @@ block content
     $("#reset").click(function(e) {
       if (window.confirm("Are you sure you want to reset?"))
         socket.emit("reset");
+        generation = 0;
     });
 
     $("#auto").click(function(e) {
@@ -189,6 +196,8 @@ block content
 
     socket.on("update", function(board) {
       grid = board;
+      generation++;
+      $("#generation").html(generation);
       draw();
     });
 
