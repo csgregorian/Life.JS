@@ -82,7 +82,8 @@ var newGrid = function() {
 }
 
 var grid = newGrid()
-
+var repeater = null
+var is_auto = false;
 
 // Sockets
 io.sockets.on('connection', function(socket){
@@ -93,7 +94,7 @@ io.sockets.on('connection', function(socket){
     io.emit('toggle', coord);
   });
 
-  socket.on('update', function() {
+  function update() {
     var ngrid = new Array(64);
     for (var i = 0; i < 64; i++) {
       ngrid[i] = new Array(64);
@@ -121,11 +122,27 @@ io.sockets.on('connection', function(socket){
     grid = ngrid;
 
     io.emit('update', grid);
-  });
+  }
+
+  socket.on('update', update);
 
   socket.on('reset', function() {
     grid = newGrid();
     io.emit('update', grid);
+  });
+
+  socket.on('auto', function() {
+    if (is_auto) {
+      clearInterval(repeater);
+      is_auto = false;
+    } else {
+      repeater = setInterval(function() {
+        update();
+      }, 50);
+      is_auto = true;
+    }
+
+    socket.emit('auto', is_auto);
   });
 });
 

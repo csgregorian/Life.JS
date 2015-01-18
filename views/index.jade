@@ -7,10 +7,17 @@ block head
 block content
   div
     canvas#c(width=640 height=640)
-  div
-    button#evolve(name=evolve type=submit) Evolve
-    button#reset(name=reset type=submit) Reset
+  div.button-container
+    a
+      div.button#evolve Evolve
+    a
+      div.button#reset Reset
+    a
+      div.button#auto Auto-evolve
 
+
+
+  //- JAVASCRIPT STARTS HERE
   script.
     var cv = document.getElementById('c');
     var c = cv.getContext("2d");
@@ -53,13 +60,27 @@ block content
         socket.emit("reset");
     });
 
+    $("#auto").click(function(e) {
+      socket.emit("auto");
+    });
+
     socket.on("toggle", function(coord) {
       grid[coord.x][coord.y] = !grid[coord.x][coord.y];
-      console.log(grid[coord.x][coord.y]);
       draw();
     });
 
     socket.on("update", function(board) {
       grid = board;
       draw();
+    });
+
+    socket.on("auto", function(is_auto) {
+      console.log("auto");
+      if (is_auto) {
+        $("#auto").css({"background-color": "#000000"});
+        $("#auto:hover").css({"background-color": "#333333"});
+      } else {
+        $("#auto").css({"background-color": "#333333"});
+        $("#auto:hover").css({"background-color": "#000000"});
+      }
     });
