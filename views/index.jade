@@ -19,6 +19,10 @@ block content
 
   //- JAVASCRIPT STARTS HERE
   script.
+    //- Eliminates residual JQuery Mobile element
+    $.mobile.loading().remove();
+
+    //- Prefixing for vibration on mobile
     navigator.vibrate = navigator.vibrate ||
                         navigator.webkitVibrate ||
                         navigator.mozVibrate ||
@@ -50,8 +54,6 @@ block content
       }
     }
 
-    draw();
-
     function getMousePos(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         return {
@@ -60,23 +62,35 @@ block content
         };
     }
 
-    var m = {x:0, y:0};
+    function getTouchPos(evt) {
+      evt = evt.originalEvent;
+      var touch = evt.touches[0];
+
+      return {
+        x: Math.floor(touch.pageX/10),
+        y: Math.floor(touch.pageY/10)
+      };
+    }
+
+    draw();
+
+    var pos = {x:0, y:0};
     var mouse_down = false;
     var fill = false;
 
     $("canvas").mousedown(function(e) {
-      m = getMousePos(cv, e);
+      pos = getMousePos(cv, e);
       mouse_down = true;
 
-      if (grid[m.x][m.y]) {
-        grid[m.x][m.y] = false;
+      if (grid[pos.x][pos.y]) {
+        grid[pos.x][pos.y] = false;
         fill = false;
       } else {
-        grid[m.x][m.y] = true;
+        grid[pos.x][pos.y] = true;
         fill = true;
       }
 
-      socket.emit("toggle", m);
+      socket.emit("toggle", pos);
       draw();
     });
 
@@ -90,62 +104,61 @@ block content
         return;
       }
 
-      m = getMousePos(cv, e);
+      pos = getMousePos(cv, e);
 
       if (fill) {
-        if (!grid[m.x][m.y]) {
-          grid[m.x][m.y] = true;
-          socket.emit("toggle", m);
+        if (!grid[pos.x][pos.y]) {
+          grid[pos.x][pos.y] = true;
+          socket.emit("toggle", pos);
           draw();
         }
       } else if (!fill) {
-        if (grid[m.x][m.y]) {
-          grid[m.x][m.y] = false;
-          socket.emit("toggle", m);
+        if (grid[pos.x][pos.y]) {
+          grid[pos.x][pos.y] = false;
+          socket.emit("toggle", pos);
           draw();
         }
       }
     });
 
-    $("canvas").bind("touchstart", function(e) {
-      m = getMousePos(cv, e);
+    $(document).on("touchstart", function(e) {
+      pos = getTouchPos(e);
+
       mouse_down = true;
 
-      if (grid[m.x][m.y]) {
-        grid[m.x][m.y] = false;
+      if (grid[pos.x][pos.y]) {
+        grid[pos.x][pos.y] = false;
         fill = false;
       } else {
-        grid[m.x][m.y] = true;
+        grid[pos.x][pos.y] = true;
         fill = true;
       }
 
-      socket.emit("toggle", m);
+      socket.emit("toggle", pos);
       draw();
     });
 
-    $("canvas").bind("touchend", function (e) {
+    $(document).on("touchend", function (e) {
       mouse_down = false;
-    });
+    }); 
 
-    $("canvas").bind("touchmove", function(e) {
+    $(document).on("touchmove", function(e) {
+      pos = getTouchPos(e);
+
       if (!mouse_down) {
         return;
       }
 
-      m = getMousePos(cv, e);
-      m.x = e.originalEvent.touches[0].pageX;
-      m.y = e.originalEvent.touches[0].pageY;
-
       if (fill) {
-        if (!grid[m.x][m.y]) {
-          grid[m.x][m.y] = true;
-          socket.emit("toggle", m);
+        if (!grid[pos.x][pos.y]) {
+          grid[pos.x][pos.y] = true;
+          socket.emit("toggle", pos);
           draw();
         }
       } else if (!fill) {
-        if (grid[m.x][m.y]) {
-          grid[m.x][m.y] = false;
-          socket.emit("toggle", m);
+        if (grid[pos.x][pos.y]) {
+          grid[pos.x][pos.y] = false;
+          socket.emit("toggle", pos);
           draw();
         }
       }
@@ -187,3 +200,5 @@ block content
         $("#auto").css({"background-color": "#333333"});
       }
     });
+
+    window.onerror = function(err) {alert(err);}
