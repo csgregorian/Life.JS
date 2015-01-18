@@ -133,6 +133,8 @@ block content
       }
 
       m = getMousePos(cv, e);
+      m.x = e.originalEvent.touches[0].pageX;
+      m.y = e.originalEvent.touches[0].pageY;
 
       if (fill) {
         if (!grid[m.x][m.y]) {
