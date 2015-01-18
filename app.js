@@ -72,11 +72,17 @@ var gridSum = function(x, y, grid) {
   return s;
 }
 
+var newGrid = function() {
+  var grid = new Array(64);
+  for (var i = 0; i < 64; i++) {
+    grid[i] = new Array(64);
+  }
 
-var grid = new Array(64);
-for (var i = 0; i < 64; i++) {
-  grid[i] = new Array(64);
+  return grid;
 }
+
+var grid = newGrid()
+
 
 // Sockets
 io.sockets.on('connection', function(socket){
@@ -114,6 +120,11 @@ io.sockets.on('connection', function(socket){
 
     grid = ngrid;
 
+    io.emit('update', grid);
+  });
+
+  socket.on('reset', function() {
+    grid = newGrid();
     io.emit('update', grid);
   });
 });

@@ -8,7 +8,8 @@ block content
   div
     canvas#c(width=640 height=640)
   div
-    button(name=next type=submit) Evolve
+    button#evolve(name=evolve type=submit) Evolve
+    button#reset(name=reset type=submit) Reset
 
   script.
     var cv = document.getElementById('c');
@@ -43,8 +44,12 @@ block content
       socket.emit("toggle", {x: Math.floor(e.pageX/10), y: Math.floor(e.pageY/10)});
     });
 
-    $("button").click(function(e) {
+    $("#evolve").click(function(e) {
       socket.emit("update");
+    });
+
+    $("#reset").click(function(e) {
+      socket.emit("reset");
     });
 
     socket.on("toggle", function(coord) {
