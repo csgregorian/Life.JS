@@ -56,8 +56,17 @@ block content
 
     draw();
 
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: Math.floor((evt.clientX - rect.left)/10),
+          y: Math.floor((evt.clientY - rect.top)/10)
+        };
+    }
+
     $("canvas").mousedown(function(e) {
-      socket.emit("toggle", {x: Math.floor(e.pageX/10), y: Math.floor(e.pageY/10)});
+      console.log(getMousePos(cv, e));
+      socket.emit("toggle", getMousePos(cv, e));
     });
 
     $("#evolve").click(function(e) {

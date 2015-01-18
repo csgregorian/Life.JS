@@ -1,3 +1,9 @@
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   width: 640px;
   margin: 0 auto;
@@ -14,15 +20,21 @@ canvas {
   font-size: 48px;
   text-align: center;
   background-color: #333;
-  -webkit-transition: background-color 0.5s;
-  -moz-transition: background-color 0.5s;
-  -o-transition: background-color 0.5s;
-  -ms-transition: background-color 0.5s;
-  transition: background-color 0.5s;
+  -webkit-transition: background-color 0.3s;
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -ms-transition: background-color 0.3s;
+  transition: background-color 0.3s;
   cursor: default;
 }
 .button:hover {
-  background-color: #000 !important;
+  background-color: #333;
+}
+.button:active {
+  background-color: #000;
+}
+.button:focus {
+  background-color: #333;
 }
 a:hover {
   text-decoration: none;
