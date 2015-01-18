@@ -9,16 +9,25 @@ block content
     canvas#c(width=640 height=640)
   div.button-container
     a
-      div.button#evolve Evolve
+      div.button#evolve(ontouchend="this.onclick=fix") Evolve
     a
-      div.button#reset Reset
+      div.button#reset(ontouchend="this.onclick=fix") Reset
     a
-      div.button#auto Auto-evolve
+      div.button#auto(ontouchend="this.onclick=fix") Auto-evolve
 
 
 
   //- JAVASCRIPT STARTS HERE
   script.
+    //- Fixes sticky hover on mobile
+    function fix() {
+        var el = this;
+        var par = el.parentNode;
+        var next = el.nextSibling;
+        par.removeChild(el);
+        setTimeout(function() {par.insertBefore(el, next);}, 0)
+    }
+
     var cv = document.getElementById('c');
     var c = cv.getContext("2d");
 
