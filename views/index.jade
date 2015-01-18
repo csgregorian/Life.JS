@@ -2,31 +2,23 @@ extends layout
 
 block head
   link(rel="stylesheet" type="text/css" href="index.css")
-  title GameOfLife.js
+  title GameOfLifeJS
 
 block content
   div
     canvas#c(width=640 height=640)
   div.button-container
     a
-      div.button#evolve(ontouchend="this.onclick=fix") Evolve
+      div.button#evolve Evolve
     a
-      div.button#reset(ontouchend="this.onclick=fix") Reset
+      div.button#reset Reset
     a
-      div.button#auto(ontouchend="this.onclick=fix") Auto-evolve
+      div.button#auto Auto-evolve
 
 
 
   //- JAVASCRIPT STARTS HERE
   script.
-    //- Fixes sticky hover on mobile
-    function fix() {
-        var el = this;
-        var par = el.parentNode;
-        var next = el.nextSibling;
-        par.removeChild(el);
-        setTimeout(function() {par.insertBefore(el, next);}, 0)
-    }
 
     var cv = document.getElementById('c');
     var c = cv.getContext("2d");

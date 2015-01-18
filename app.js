@@ -142,7 +142,7 @@ io.sockets.on('connection', function(socket){
       is_auto = true;
     }
 
-    socket.emit('auto', is_auto);
+    io.emit('auto', is_auto);
   });
 });
 
