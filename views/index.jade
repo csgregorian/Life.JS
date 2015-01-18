@@ -39,7 +39,7 @@ block content
 
     draw();
 
-    $("canvas").click(function(e) {
+    $("canvas").mousedown(function(e) {
       socket.emit("toggle", {x: Math.floor(e.pageX/10), y: Math.floor(e.pageY/10)});
     });
 
